@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Tugas 1 - JavaScript dhea dwi caramoy</title>
+  
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fa;
+      color: #151515;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #1f2122;
+    }
+    .card {
+      background: white;
+      border-radius: 10px;
+      padding: 20px;
+      margin: 15px auto;
+      max-width: 400px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .result {
+      font-size: 18px;
+      margin: 10px 0;
+      padding: 10px;
+      background: #ecf0f1;
+      border-left: 5px solid #0a3179;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Menghitung Luas Bangun Datar</h1>
+
+  <div class="card">
+    <h2>Hasil Perhitungan</h2>
+    <div id="output"></div>
+  </div>
+
+  <script>
+    // Fungsi menghitung luas persegi panjang
+    // Rumus: panjang * lebar
+    function luasPersegiPanjang(panjang, lebar) {
+      return panjang * lebar;
+    }
+
+    // Fungsi menghitung luas bujur sangkar
+    // Rumus: sisi * sisi
+    function luasBujurSangkar(sisi) {
+      return sisi * sisi;
+    }
+
+    // Fungsi menghitung luas segitiga
+    // Rumus: 1/2 * alas * tinggi
+    function luasSegitiga(alas, tinggi) {
+      return (alas * tinggi) / 2;
+    }
+
+    // Variabel input
+    let panjang = 12;
+    let lebar   = 7;
+    let sisi    = 9;
+    let alas    = 14;
+    let tinggi  = 10;
+    
+
+    // Panggil fungsi untuk menghitung luas
+    let hasilPersegiPanjang = luasPersegiPanjang(panjang, lebar);
+    let hasilBujurSangkar   = luasBujurSangkar(sisi);
+    let hasilSegitiga       = luasSegitiga(alas, tinggi);
+
+    // Menampilkan hasil ke halaman web
+    let outputDiv = document.getElementById("output");
+    outputDiv.innerHTML  = "<div class='result'>Luas Persegi Panjang = " + hasilPersegiPanjang + "</div>";
+    outputDiv.innerHTML += "<div class='result'>Luas Bujur Sangkar = " + hasilBujurSangkar + "</div>";
+    outputDiv.innerHTML += "<div class='result'>Luas Segitiga = " + hasilSegitiga + "</div>";
+  </script>
+</body>
+</html>
