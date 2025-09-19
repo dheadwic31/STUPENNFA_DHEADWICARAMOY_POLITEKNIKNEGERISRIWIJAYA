@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Data Pegawai</title>
+</head>
+<body>
+  <h2>Data Pegawai</h2>
+  <table border="1" cellpadding="8" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Nama Pegawai</th>
+        <th>Umur</th>
+        <th>Jabatan</th>
+        <th>Status</th>
+        <th>Gaji Pokok</th>
+        <th>Tunjangan Jabatan</th>
+        <th>BPJS</th>
+        <th>Tunjangan Keluarga</th>
+      </tr>
+    </thead>
+    <tbody id="dataPegawai">
+    </tbody>
+    <tfoot id="totalGaji">
+    </tfoot>
+  </table>
+
+  <script>
+    // Data Pegawai
+    let nama = "dodi prayodi";
+    let umur = 25;
+    let jabatan = "manajer";
+    let status = "menikah";
+
+    // Gaji Pokok berdasarkan jabatan
+    let gapok = 0;
+    if (jabatan.toLowerCase() === "manajer") {
+      gapok = 15000000;
+    } else if (jabatan.toLowerCase() === "asisten manajer") {
+      gapok = 10000000;
+    } else if (jabatan.toLowerCase() === "staff") {
+      gapok = 5000000;
+    }
+
+    // Perhitungan tunjangan
+    let tunjanganJabatan = 0.15 * gapok;
+    let bpjs = 0.10 * gapok;
+    let tunjanganKeluarga = (status.toLowerCase() === "menikah") ? 0.20 * gapok : 0;
+
+    // Total Gaji
+    let totalGaji = gapok + tunjanganJabatan + bpjs + tunjanganKeluarga;
+
+    // Tabel
+    document.getElementById("dataPegawai").innerHTML = `
+      <tr>
+        <td>${nama}</td>
+        <td>${umur}</td>
+        <td>${jabatan}</td>
+        <td>${status}</td>
+        <td>Rp ${gapok.toLocaleString()}</td>
+        <td>Rp ${tunjanganJabatan.toLocaleString()}</td>
+        <td>Rp ${bpjs.toLocaleString()}</td>
+        <td>Rp ${tunjanganKeluarga.toLocaleString()}</td>
+      </tr>
+    `;
+
+    document.getElementById("totalGaji").innerHTML = `
+      <tr>
+        <th colspan="8" style="text-align:right">Total Gaji: Rp ${totalGaji.toLocaleString()}</th>
+      </tr>
+    `;
+  </script>
+</body>
+</html>
