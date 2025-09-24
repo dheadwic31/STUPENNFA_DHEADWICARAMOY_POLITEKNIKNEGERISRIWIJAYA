@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Sistem Manajemen Transportasi</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background: #ffffff;
+      padding: 20px;
+      margin: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #a82d57;
+      margin-bottom: 30px;
+    }
+    .form-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      border: 2px solid #f7c6d8;
+    }
+    h3 {
+      margin-top: 0;
+      color: #d94f77;
+      border-bottom: 2px solid #f7c6d8;
+      padding-bottom: 5px;
+    }
+    label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+      color: #a82d57;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #f7c6d8;
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: 0.3s;
+    }
+    input:focus, select:focus {
+      border-color: #d94f77;
+      box-shadow: 0 0 6px rgba(217,79,119,0.3);
+    }
+    button {
+      background: #f7c6d8;
+      color: #a82d57;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+      border: none;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background: #d94f77;
+      color: #fff;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    th, td {
+      border: 1px solid #f7c6d8;
+      padding: 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #f7c6d8;
+      color: #a82d57;
+      text-align: center;
+    }
+    tr:nth-child(even) {
+      background: #fff5f8;
+    }
+    .riwayat {
+      font-size: 12px;
+      color: #555;
+    }
+    .kendaraan-detail {
+      font-size: 13px;
+      color: #444;
+    }
+    .status-sedang {
+      color: #2e7d32;
+      font-weight: bold;
+      background: #e8f5e9;
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .status-selesai {
+      color: #b71c1c;
+      font-weight: bold;
+      background: #ffebee;
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .status-belum {
+      color: #9c27b0;
+      font-weight: bold;
+      background: #f3e5f5;
+      padding: 4px 8px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+    .filter-container {
+      max-width: 800px;
+      margin: 0 auto 20px auto;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+    }
+    .filter-container label {
+      margin: 0;
+    }
+    .btn-hapus {
+      background: #ffb3c1;
+      color: #a82d57;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-hapus:hover {
+      background: #ff4d6d;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+    <h1>🌸 Sistem Manajemen Transportasi 🌸<br>DHEA DWI CARAMOY</h1>
+
+  <!-- Form Input -->
+  <div class="form-container">
+    <h3>Tambah Transaksi Penyewaan</h3>
+    <label>Nama Pelanggan:</label>
+    <input type="text" id="nama">
+
+    <label>Nomor Telepon:</label>
+    <input type="text" id="telepon">
+
+    <label>Jenis Kendaraan:</label>
+    <select id="jenisKendaraan" onchange="tampilDetailForm()">
+      <option value="">-- Pilih Jenis --</option>
+      <option value="Mobil">Mobil</option>
+      <option value="Motor">Motor</option>
+      <option value="Bus">Bus</option>
+    </select>
+
+    <!-- Detail Kendaraan Dinamis -->
+    <div id="detailKendaraan" style="display:none;">
+      <label>Merk:</label>
+      <input type="text" id="merk">
+
+      <label>Model:</label>
+      <input type="text" id="model">
+
+      <label>Tahun:</label>
+      <input type="number" id="tahun">
+
+      <label>Plat Nomor:</label>
+      <input type="text" id="plat">
+
+      <label>Warna:</label>
+      <input type="text" id="warna">
+
+      <label>Kapasitas:</label>
+      <input type="number" id="kapasitas" placeholder="cth: 2 untuk motor, 7 untuk mobil">
+    </div>
+
+    <label>Tanggal Sewa:</label>
+    <input type="date" id="tglSewa">
+
+    <label>Tanggal Selesai:</label>
+    <input type="date" id="tglSelesai">
+
+    <button onclick="tambahTransaksi()">+ Tambah Penyewaan</button>
+  </div>
+
+  <!-- Filter -->
+  <div class="filter-container">
+    <label for="filterKategori">Filter Kategori:</label>
+    <select id="filterKategori" onchange="sistem.tampilkanPelanggan()">
+      <option value="Semua">Semua</option>
+      <option value="Mobil">Mobil</option>
+      <option value="Motor">Motor</option>
+      <option value="Bus">Bus</option>
+    </select>
+  </div>
+
+  <!-- Tabel Output -->
+  <h3>Daftar Pelanggan Sedang / Pernah Menyewa Kendaraan</h3>
+  <table id="tabelPelanggan">
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Nama</th>
+        <th>Nomor Telepon</th>
+        <th>Kendaraan Disewa</th>
+        <th>Tanggal Sewa</th>
+        <th>Tanggal Selesai</th>
+        <th>Status</th>
+        <th>Riwayat Transaksi</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    class Kendaraan {
+      constructor(jenis, merk, model, tahun, plat, warna, kapasitas = "-") {
+        this.jenis = jenis;
+        this.merk = merk;
+        this.model = model;
+        this.tahun = tahun;
+        this.plat = plat;
+        this.warna = warna;
+        this.kapasitas = kapasitas;
+      }
+      info() {
+        return `
+          <div class="kendaraan-detail">
+            <b>${this.jenis}</b> - ${this.merk} ${this.model} (${this.tahun})<br>
+            Plat: ${this.plat}, Warna: ${this.warna}, Kapasitas: ${this.kapasitas}
+          </div>
+        `;
+      }
+    }
+
+    class Pelanggan {
+      constructor(nama, nomorTelepon) {
+        this.nama = nama;
+        this.nomorTelepon = nomorTelepon;
+        this.kendaraanDisewa = null;
+        this.riwayatTransaksi = [];
+      }
+      sewaKendaraan(kendaraan, tglSewa, tglSelesai) {
+        this.kendaraanDisewa = kendaraan;
+        const transaksi = { kendaraan: kendaraan.info(), jenis: kendaraan.jenis, tglSewa, tglSelesai };
+        this.riwayatTransaksi.push(transaksi);
+      }
+      statusTerakhir() {
+        if (this.riwayatTransaksi.length === 0) return "-";
+        const terakhir = this.riwayatTransaksi[this.riwayatTransaksi.length - 1];
+        const today = new Date().toISOString().split("T")[0];
+
+        if (today >= terakhir.tglSewa && today <= terakhir.tglSelesai) {
+          return `<span class="status-sedang">Sedang Sewa</span>`;
+        } else if (today > terakhir.tglSelesai) {
+          return `<span class="status-selesai">Selesai</span>`;
+        } else if (today < terakhir.tglSewa) {
+          return `<span class="status-belum">Belum Mulai</span>`;
+        }
+      }
+      infoPelanggan() {
+        const terakhir = this.riwayatTransaksi[this.riwayatTransaksi.length-1];
+        return {
+          nama: this.nama,
+          telepon: this.nomorTelepon,
+          kendaraan: this.kendaraanDisewa ? this.kendaraanDisewa.info() : "-",
+          jenis: this.kendaraanDisewa ? this.kendaraanDisewa.jenis : "-",
+          tglSewa: terakhir ? terakhir.tglSewa : "-",
+          tglSelesai: terakhir ? terakhir.tglSelesai : "-",
+          status: this.statusTerakhir(),
+          riwayat: this.riwayatTransaksi.map(
+            (t, i) => `${i+1}. Sewa: ${t.tglSewa}, Selesai: ${t.tglSelesai}<br>${t.kendaraan}`
+          ).join("<hr>")
+        };
+      }
+    }
+
+    class SistemTransportasi {
+      constructor() { this.daftarPelanggan = []; }
+      tambahPelanggan(pelanggan) { this.daftarPelanggan.push(pelanggan); }
+      hapusPelanggan(index) {
+        if (confirm("Yakin ingin menghapus data ini?")) {
+          this.daftarPelanggan.splice(index, 1);
+          this.tampilkanPelanggan();
+        }
+      }
+      tampilkanPelanggan() {
+        const tbody = document.querySelector("#tabelPelanggan tbody");
+        tbody.innerHTML = "";
+        const filter = document.getElementById("filterKategori").value;
+        let data = this.daftarPelanggan;
+        if (filter !== "Semua") {
+          data = data.filter(p => p.kendaraanDisewa && p.kendaraanDisewa.jenis === filter);
+        }
+        data.forEach((p, i) => {
+          const d = p.infoPelanggan();
+          tbody.innerHTML += `
+            <tr>
+              <td>${i+1}</td>
+              <td>${d.nama}</td>
+              <td>${d.telepon}</td>
+              <td>${d.kendaraan}</td>
+              <td>${d.tglSewa}</td>
+              <td>${d.tglSelesai}</td>
+              <td>${d.status}</td>
+              <td class="riwayat">${d.riwayat}</td>
+              <td><button class="btn-hapus" onclick="sistem.hapusPelanggan(${i})">Hapus</button></td>
+            </tr>`;
+        });
+      }
+    }
+
+    const sistem = new SistemTransportasi();
+
+    function tambahPelangganLama() {
+      const dataLama = [
+        { nama: "dhea dwi caramoy", telp: "0812345667", jenis:"Mobil", merk:"Toyota", model:"Yaris", tahun:2025, plat:"PInk34CD", warna:"Pink", kapasitas:4, tglSewa:"2025-09-24", tglSelesai:"2025-09-30" },
+        { nama: "Andi Wijaya", telp: "08123456789", jenis:"Mobil", merk:"Toyota", model:"Avanza", tahun:2020, plat:"B1234CD", warna:"Hitam", kapasitas:7, tglSewa:"2025-10-11", tglSelesai:"2025-10-15" },
+        { nama: "Budi Santoso", telp: "082233445566", jenis:"Motor", merk:"Honda", model:"Vario 150", tahun:2022, plat:"B5678EF", warna:"Merah", kapasitas:2, tglSewa:"2025-09-09", tglSelesai:"2025-09-10" },
+        { nama: "Citra Dewi", telp: "083344556677", jenis:"Bus", merk:"Hino", model:"Dutro", tahun:2019, plat:"B9999GH", warna:"Putih", kapasitas:40, tglSewa:"2025-08-05", tglSelesai:"2025-08-08" },
+        { nama: "Dewi Anggraini", telp: "081112223333", jenis:"Mobil", merk:"Honda", model:"Jazz", tahun:2021, plat:"B1111JK", warna:"Biru", kapasitas:5, tglSewa:"2025-07-20", tglSelesai:"2025-07-22" },
+        { nama: "Eko Prasetyo", telp: "085544332211", jenis:"Motor", merk:"Yamaha", model:"NMAX", tahun:2023, plat:"B2222LM", warna:"Silver", kapasitas:2, tglSewa:"2025-06-15", tglSelesai:"2025-06-16" },
+        { nama: "Fajar Nugroho", telp: "087766554433", jenis:"Mobil", merk:"Mitsubishi", model:"Xpander", tahun:2020, plat:"B3333NO", warna:"Putih", kapasitas:7, tglSewa:"2025-05-01", tglSelesai:"2025-05-05" }
+      ];
+      dataLama.forEach(d => {
+        const kendaraan = new Kendaraan(d.jenis, d.merk, d.model, d.tahun, d.plat, d.warna, d.kapasitas);
+        const pelanggan = new Pelanggan(d.nama, d.telp);
+        pelanggan.sewaKendaraan(kendaraan, d.tglSewa, d.tglSelesai);
+        sistem.tambahPelanggan(pelanggan);
+      });
+      sistem.tampilkanPelanggan();
+    }
+    tambahPelangganLama();
+
+    function tampilDetailForm() {
+      const jenis = document.getElementById("jenisKendaraan").value;
+      document.getElementById("detailKendaraan").style.display = jenis ? "block" : "none";
+    }
+
+    function tambahTransaksi() {
+      const nama = document.getElementById("nama").value;
+      const telepon = document.getElementById("telepon").value;
+      const jenis = document.getElementById("jenisKendaraan").value;
+      const tglSewa = document.getElementById("tglSewa").value;
+      const tglSelesai = document.getElementById("tglSelesai").value;
+      if (!nama || !telepon || !jenis || !tglSewa) {
+        alert("Harap isi semua data pelanggan, kendaraan, dan tanggal sewa!");
+        return;
+      }
+      const merk = document.getElementById("merk").value;
+      const model = document.getElementById("model").value;
+      const tahun = document.getElementById("tahun").value;
+      const plat = document.getElementById("plat").value;
+      const warna = document.getElementById("warna").value;
+      const kapasitas = document.getElementById("kapasitas").value;
+      if (!merk || !model || !tahun || !plat || !warna) {
+        alert("Harap isi semua detail kendaraan!");
+        return;
+      }
+      const kendaraan = new Kendaraan(jenis, merk, model, tahun, plat, warna, kapasitas);
+      const pelanggan = new Pelanggan(nama, telepon);
+      pelanggan.sewaKendaraan(kendaraan, tglSewa, tglSelesai);
+      sistem.tambahPelanggan(pelanggan);
+      sistem.tampilkanPelanggan();
+      document.querySelectorAll("input, select").forEach(el => el.value = "");
+      document.getElementById("detailKendaraan").style.display = "none";
+    }
+  </script>
+</body>
+</html>
