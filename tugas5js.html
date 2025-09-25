@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manajemen Produk Dhea Dwi Caramoy</title>
+    <style>
+        :root {
+            --soft-pink-bg: #fdf5f6;
+            --light-pink: #ffe0e6;
+            --medium-pink: #ff9fb4;
+            --darker-pink: #e76f8c;
+            --text-color: #333;
+            --code-bg: #4a4e69;
+            --code-text: #ffe0e6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 30px;
+            background-color: var(--soft-pink-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+        h1 {
+            color: var(--darker-pink);
+            border-bottom: 3px solid var(--light-pink);
+            padding-bottom: 10px;
+            font-size: 2em;
+            font-weight: 600;
+        }
+        h2 {
+            color: var(--medium-pink);
+            margin-top: 25px;
+            font-size: 1.5em;
+        }
+        
+        .input-group {
+            background-color: var(--light-pink);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: grid;
+            gap: 10px;
+            grid-template-columns: repeat(4, 1fr) auto;
+            align-items: end;
+        }
+        .delete-group {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: var(--light-pink);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: var(--darker-pink);
+        }
+        input[type="number"], 
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--medium-pink);
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        
+        .output-box {
+            background-color: var(--code-bg);
+            color: var(--code-text);
+            padding: 20px;
+            border-radius: 10px;
+            white-space: pre-wrap;
+            font-family: 'Consolas', 'Courier New', monospace;
+            margin-top: 15px;
+            border: 2px solid var(--medium-pink);
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        .action-button {
+            padding: 12px 20px;
+            background-color: var(--darker-pink);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(231, 111, 140, 0.4);
+        }
+        .action-button.filter-btn {
+            background-color: #ffc0cb; /* Lebih ringan untuk filter */
+            color: var(--darker-pink);
+            box-shadow: 0 2px 4px rgba(231, 111, 140, 0.2);
+            font-size: 0.9em;
+        }
+        .action-button.filter-btn:hover {
+            background-color: #ff9fb4;
+            color: white;
+        }
+        .action-button:hover {
+            background-color: var(--medium-pink);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(231, 111, 140, 0.6);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>🛍️ Manajemen Produk✨</h1>
+        
+        <h2>Tambah Produk</h2>
+        <div class="input-group">
+            <div>
+                <label for="newId">ID Produk:</label>
+                <input type="number" id="newId" placeholder="ID (cth: 6)" value="6" min="1">
+            </div>
+            <div>
+                <label for="newName">Nama Produk:</label>
+                <input type="text" id="newName" placeholder="Nama (cth: Keyboard)" value="Keyboard Gaming">
+            </div>
+            <div>
+                <label for="newPrice">Harga:</label>
+                <input type="number" id="newPrice" placeholder="Harga (cth: 850000)" value="850000" min="0">
+            </div>
+            <div>
+                <label for="newCategory">Kategori:</label>
+                <select id="newCategory">
+                    <option value="Elektronik">Elektronik</option>
+                    <option value="Aksesoris">Aksesoris</option>
+                    <option value="Peralatan">Peralatan</option>
+                </select>
+            </div>
+            <button id="tambah-btn" class="action-button">TAMBAH</button>
+        </div>
+
+        <h2>Hapus Produk</h2>
+        <div class="delete-group">
+            <div style="flex-grow: 3;">
+                <label for="deleteId">ID Produk yang Dihapus:</label>
+                <input type="number" id="deleteId" placeholder="ID (cth: 4)" value="4" min="1">
+            </div>
+            <button id="hapus-btn" class="action-button" style="flex-grow: 1;">HAPUS</button>
+        </div>
+
+        <hr style="border-top: 1px dashed var(--medium-pink);">
+
+        <h2>-Daftar Produk Saat Ini-:</h2>
+        <p>Filter data atau tampilkan semua produk:</p>
+        <button id="filter-elektronik" class="action-button filter-btn">Elektronik</button>
+        <button id="filter-aksesoris" class="action-button filter-btn">Aksesoris</button>
+        <button id="filter-peralatan" class="action-button filter-btn">Peralatan</button>
+        <button id="tampilkan-btn" class="action-button">TAMPILKAN SEMUA PRODUK</button>
+        
+        <div id="product-output" class="output-box">
+            Klik tombol tampilan untuk melihat data.
+        </div>
+    </div>
+
+    <script>
+        let productList = [
+            { id: 1, nama: "Laptop", harga: 12000000, kategori: "Elektronik" },
+            { id: 2, nama: "Smartphone", harga: 5000000, kategori: "Elektronik" },
+            { id: 3, nama: "Headset", harga: 300000, kategori: "Aksesoris" },
+            { id: 4, nama: "Monitor", harga: 2500000, kategori: "Elektronik" },
+            { id: 5, nama: "Mouse Wireless", harga: 150000, kategori: "Aksesoris" }
+        ];
+
+        const productOutput = document.getElementById('product-output');
+        const newIdInput = document.getElementById('newId');
+        const newNameInput = document.getElementById('newName');
+        const newPriceInput = document.getElementById('newPrice');
+        const newCategorySelect = document.getElementById('newCategory');
+        const deleteIdInput = document.getElementById('deleteId');
+        const tambahBtn = document.getElementById('tambah-btn');
+        const hapusBtn = document.getElementById('hapus-btn');
+        const tampilkanBtn = document.getElementById('tampilkan-btn');
+
+
+        // ==========================================================
+        // 1. MENAMPILKAN SEMUA PRODUK (Menggunakan Destructuring)
+        // ==========================================================
+        function tampilkanProduk(kategoriFilter) {
+            const dataTampil = kategoriFilter
+                ? productList.filter(p => p.kategori === kategoriFilter)
+                : productList;
+
+            let output = kategoriFilter 
+                ? `✨ DAFTAR PRODUK KATEGORI: ${kategoriFilter.toUpperCase()} ✨\n`
+                : '✨ DAFTAR SEMUA PRODUK TOKO ONLINE ✨\n';
+                
+            output += '-------------------------------------------------------------------\n';
+            
+            if (dataTampil.length === 0) {
+                output += `Tidak ada produk dalam kategori ${kategoriFilter || 'ini'} atau daftar kosong.\n`;
+            } else {
+                dataTampil.forEach(produk => {
+                  const { id, nama, harga, kategori } = produk; 
+                    output += `ID: ${id} | Nama: ${nama.padEnd(20)} | Harga: Rp ${harga.toLocaleString('id-ID')} | Kategori: ${kategori}\n`;
+                });
+            }
+            output += '-------------------------------------------------------------------';
+            productOutput.textContent = output;
+            console.log(`Daftar produk (${kategoriFilter || 'Semua'}) ditampilkan.`);
+        }
+
+        // ==========================================================
+        // 2. MENAMBAHKAN PRODUK (Spread Operator & Rest Parameter)
+        // ==========================================================
+        function tambahProduk(id, nama, harga, kategori, ...tambahanInfo) { 
+            const newProduct = { id, nama, harga, kategori }; 
+            
+            const exists = productList.some(p => p.id === id);
+            if (exists) {
+                console.warn(`[ GAGAL] ID ${id} sudah ada.`);
+                alert(`Gagal: Produk dengan ID ${id} sudah ada.`);
+                return;
+            }
+
+          
+            productList = [...productList, newProduct]; 
+            console.log(`[✅ SUKSES] Produk "${nama}" (ID: ${id}) ditambahkan.`);
+            alert(`Berhasil: Produk "${nama}" ditambahkan!`);
+            
+            if (tambahanInfo.length > 0) {
+                 console.log(`[ℹ️ INFO] Rest Parameter menerima info tambahan: ${tambahanInfo.join(' | ')}`);
+            }
+        }
+
+        // ==========================================================
+        // 3. MENGHAPUS PRODUK (Filter & Rest Parameter)
+        // ==========================================================
+        function hapusProduk(id, ...rest) { 
+            const initialLength = productList.length;
+            
+            productList = productList.filter(produk => produk.id !== id);
+            
+            if (productList.length < initialLength) {
+                console.log(`[✅ SUKSES] Produk dengan ID ${id} berhasil dihapus.`);
+                alert(`Berhasil: Produk ID ${id} dihapus!`);
+            } else {
+                 console.warn(`[❌ GAGAL] Produk dengan ID ${id} tidak ditemukan.`);
+                 alert(`Gagal: Produk ID ${id} tidak ditemukan.`);
+            }
+            
+            if (rest.length > 0) {
+                 console.log(`[ℹ️ INFO] Argumen tambahan di Hapus (Rest Parameter): ${rest.join(', ')}`);
+            }
+        }
+
+        // ==========================================================
+        // EVENT LISTENER
+        // ==========================================================
+
+        tambahBtn.addEventListener('click', () => {
+            const id = parseInt(newIdInput.value);
+            const nama = newNameInput.value.trim();
+            const harga = parseInt(newPriceInput.value);
+            const kategori = newCategorySelect.value;
+
+            if (!id || !nama || isNaN(harga) || !kategori) {
+                alert("Mohon lengkapi semua field dengan benar.");
+                return;
+            }
+            
+            tambahProduk(id, nama, harga, kategori, "Diproses", "Via Form"); 
+            tampilkanProduk(); 
+        });
+
+        hapusBtn.addEventListener('click', () => {
+            const id = parseInt(deleteIdInput.value);
+
+            if (!id) {
+                alert("Mohon masukkan ID produk yang akan dihapus.");
+                return;
+            }
+            
+            hapusProduk(id, "Admin", new Date().toLocaleTimeString());
+            tampilkanProduk(); 
+        });
+
+        tampilkanBtn.addEventListener('click', () => {
+            tampilkanProduk();
+        });
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const kategori = event.target.textContent; 
+                tampilkanProduk(kategori); 
+            });
+        });
+
+        tampilkanProduk(); 
+        console.log("Aplikasi Manajemen Produk siap. Cek Konsol (F12) untuk melihat detail operasi ES6.");
+    </script>
+
+</body>
+</html>
